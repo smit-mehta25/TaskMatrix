@@ -1558,6 +1558,16 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--load', type=str, default="ImageCaptioning_cuda:0,Text2Image_cuda:0")
     args = parser.parse_args()
+    #load_dict = {}
+    #for param in args.load.split(','):
+    #    key, value = param.split(':')
+    #    splited = key.split('_')
+    #    model = splited.pop(0)
+    #    model_key = "_".join(splited)
+    #    if model in load_dict:
+    #        load_dict[model][model_key] = value.strip()
+    #    else:
+    #        load_dict[model] = {model_key: value}
     load_dict = {e.split('_')[0].strip(): e.split('_')[1].strip() for e in args.load.split(',')}
     bot = ConversationBot(load_dict=load_dict)
     with gr.Blocks(css="#chatbot .overflow-y-auto{height:500px}") as demo:
@@ -1580,4 +1590,4 @@ if __name__ == '__main__':
         clear.click(bot.memory.clear)
         clear.click(lambda: [], None, chatbot)
         clear.click(lambda: [], None, state)
-    demo.launch(server_name="0.0.0.0", server_port=7861)
+    demo.launch(server_name="0.0.0.0", server_port=7861, share=True)
